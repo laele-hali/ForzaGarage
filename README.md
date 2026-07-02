@@ -1,130 +1,86 @@
-# 🚗 Garage API
+# 🚗 Forza Garage API
 
 A personal learning project focused on building a modern cloud-native REST API using Python, FastAPI, MongoDB, Redis, Docker and Kubernetes.
 
-The application stores and manages a collection of cars, initially from **Forza Horizon 6**, while serving as a practical platform for learning backend development, containerisation and Kubernetes deployment.
+The application stores and manages a personal collection of cars from **Forza Horizon 6**, while providing a practical platform for learning backend development, containerisation, caching and Kubernetes.
 
 ---
 
 # Project Goals
 
-This project is designed to gain hands-on experience with:
+This project is designed to gain practical experience with:
 
-* Building REST APIs
-* Working with NoSQL databases
-* Implementing Redis caching
-* Containerising applications with Docker
-* Deploying applications to Kubernetes
-* Using Git and GitHub effectively
-* Understanding cloud-native architecture
+- Building REST APIs
+- Working with NoSQL databases
+- Implementing Redis caching
+- Containerising applications with Docker
+- Deploying applications with Kubernetes
+- Using Git and GitHub effectively
+- Understanding cloud-native application architecture
 
-The application itself is intentionally simple so the focus remains on learning the surrounding technologies.
-
----
-
-# Planned Technology Stack
-
-| Technology           | Purpose                       |
-| -------------------- | ----------------------------- |
-| Python               | Primary programming language  |
-| FastAPI              | REST API framework            |
-| MongoDB              | Primary NoSQL database        |
-| Redis                | In-memory cache               |
-| Docker               | Containerisation              |
-| Kubernetes (k3d/k3s) | Local container orchestration |
-| Git                  | Version control               |
-| GitHub               | Source code hosting           |
+The application is intentionally simple so the focus remains on understanding the technologies behind modern backend development.
 
 ---
 
-# Planned Architecture
+# Current Technology Stack
+
+| Technology | Purpose | Status |
+|------------|---------|--------|
+| Python | Primary programming language | ✅ |
+| FastAPI | REST API framework | ✅ |
+| MongoDB | Primary NoSQL database | ✅ |
+| Redis | In-memory cache | 🚧 Planned |
+| Docker | Container platform | ✅ |
+| Docker Compose | Local multi-container environment | ✅ |
+| Kubernetes (k3d/k3s) | Local orchestration | 🚧 Planned |
+| Git | Version control | ✅ |
+| GitHub | Remote repository | ✅ |
+
+---
+
+# Current Architecture
 
 ```text
-                    Client
-                       │
-                       ▼
-                 FastAPI Application
-                  /             \
-                 /               \
-                ▼                 ▼
-          Redis Cache       MongoDB Database
+                 Client
+                    │
+                    ▼
+             FastAPI Application
+                    │
+                    ▼
+               MongoDB Database
 ```
 
-MongoDB stores the permanent data.
+### Planned Architecture
 
-Redis stores temporary cached data to improve performance and reduce database queries.
+```text
+                 Client
+                    │
+                    ▼
+             FastAPI Application
+              /               \
+             ▼                 ▼
+        Redis Cache      MongoDB Database
+```
 
----
+MongoDB stores the permanent vehicle data.
 
-# Development Roadmap
-
-## Stage 1 - Project Setup
-
-* [ ] Create GitHub repository
-* [ ] Configure Git
-* [ ] Create project structure
-* [ ] Build initial FastAPI application
-
----
-
-## Stage 2 - MongoDB Integration
-
-* [ ] Deploy MongoDB
-* [ ] Connect FastAPI
-* [ ] Create Car model
-* [ ] Implement CRUD endpoints
+Redis will cache frequently requested data to reduce database queries and improve performance.
 
 ---
 
-## Stage 3 - Redis Caching
+# Current Features
 
-* [ ] Deploy Redis
-* [ ] Cache individual car lookups
-* [ ] Implement cache invalidation
-* [ ] Configure cache expiration
+## Health
 
----
+- GET `/`
+- GET `/health`
+- GET `/health/db`
 
-## Stage 4 - Docker
+## Cars
 
-* [ ] Build application image
-* [ ] Containerise MongoDB
-* [ ] Containerise Redis
-* [ ] Test local deployment
-
----
-
-## Stage 5 - Kubernetes
-
-* [ ] Create local k3d cluster
-* [ ] Deploy MongoDB
-* [ ] Deploy Redis
-* [ ] Deploy FastAPI
-* [ ] Configure networking
-* [ ] Verify communication between services
-
----
-
-## Stage 6 - Application Improvements
-
-* [ ] Search
-* [ ] Filtering
-* [ ] Pagination
-* [ ] Validation
-* [ ] Logging
-* [ ] Configuration management
-
----
-
-## Stage 7 - Advanced Features
-
-* [ ] Authentication
-* [ ] User accounts
-* [ ] Vehicle images
-* [ ] Statistics
-* [ ] Background jobs
-* [ ] Health checks
-* [ ] API rate limiting
+- POST `/cars`
+- GET `/cars`
+- GET `/cars/{id}`
 
 ---
 
@@ -133,13 +89,103 @@ Redis stores temporary cached data to improve performance and reduce database qu
 ```json
 {
   "manufacturer": "Nissan",
-  "model": "Skyline GT-R",
+  "model": "Skyline GT-R V-Spec II",
   "model_year": 1999,
-  "class": "A",
-  "type": "Sports Car",
-  "rating": 800
+  "performance_class": "A",
+  "pi": 800,
+  "rarity": "Rare",
+  "drivetrain": "AWD",
+  "is_new": false,
+  "nickname": "Grip Build",
+  "garage_slot": 1
 }
 ```
+
+---
+
+# Project Structure
+
+```text
+app/
+├── config.py
+├── crud.py
+├── database.py
+├── main.py
+├── models.py
+├── schemas.py
+└── routers/
+    ├── cars.py
+    └── health.py
+```
+
+---
+
+# Development Roadmap
+
+## ✅ Stage 1 - Project Setup
+
+- GitHub repository
+- Git configuration
+- Project structure
+- FastAPI application
+- Swagger documentation
+
+---
+
+## ✅ Stage 2 - MongoDB Integration
+
+- MongoDB via Docker Compose
+- Database connection
+- Car schema
+- Create car endpoint
+- List cars endpoint
+- Retrieve single car endpoint
+- Database health check
+
+---
+
+## 🚧 Stage 3 - Redis Integration
+
+- Deploy Redis
+- Cache GET `/cars/{id}`
+- Cache invalidation
+- Cache expiration (TTL)
+
+---
+
+## 🚧 Stage 4 - Docker
+
+- Containerise FastAPI
+- Multi-container development environment
+- Build application image
+
+---
+
+## 🚧 Stage 5 - Kubernetes
+
+- Create local k3d cluster
+- Deploy MongoDB
+- Deploy Redis
+- Deploy FastAPI
+- Configure Services
+- Configure Ingress
+- Health probes
+
+---
+
+## Future Improvements
+
+- Update endpoint
+- Delete endpoint
+- Search
+- Filtering
+- Pagination
+- Authentication
+- Vehicle images
+- Statistics
+- Background jobs
+- Logging
+- CI/CD with GitHub Actions
 
 ---
 
@@ -147,24 +193,35 @@ Redis stores temporary cached data to improve performance and reduce database qu
 
 By completing this project I aim to understand:
 
-* REST API design
-* CRUD operations
-* NoSQL databases
-* Redis caching strategies
-* Docker fundamentals
-* Kubernetes deployments
-* Container networking
-* API testing
-* Git workflows
-* Cloud-native application architecture
+- REST API design
+- CRUD operations
+- NoSQL databases
+- Redis caching
+- Docker
+- Docker Compose
+- Kubernetes
+- Container networking
+- API testing
+- Git workflows
+- Cloud-native application architecture
 
 ---
 
-# Status
+# Current Progress
 
-🚧 Work in Progress
+### Completed
 
-This repository is being developed incrementally as a learning exercise. Each stage builds on the previous one, with the goal of understanding not just how to write an application, but how to build, deploy and manage it using modern backend technologies.
+- FastAPI application
+- MongoDB integration
+- Docker Compose
+- Create car endpoint
+- List cars endpoint
+- Retrieve single car endpoint
+- GitHub SSH authentication
+
+### Next Milestone
+
+Implement Redis caching for individual car lookups.
 
 ---
 
