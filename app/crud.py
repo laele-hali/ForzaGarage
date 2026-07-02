@@ -1,6 +1,7 @@
 from bson import ObjectId
 from bson.errors import InvalidId
 
+from app.cache import get_cache, set_cache
 from app.database import cars_collection
 from app.schemas import CarCreate
 
@@ -39,6 +40,13 @@ async def get_all_cars():
 
 
 async def get_car_by_id(car_id: str):
+    cache_key = f"car:{car_id}"
+
+    cached = await get_cache(cache_key)
+
+    if cached:
+        return cached
+
     try:
         object_id = ObjectId(car_id)
     except InvalidId:
@@ -47,6 +55,8 @@ async def get_car_by_id(car_id: str):
     car = await cars_collection.find_one({"_id": object_id})
 
     if car:
-        return car_helper(car)
+        result = car_helper(car)
+        await set_cache(cache_key, result)
+        return result
 
     return None
