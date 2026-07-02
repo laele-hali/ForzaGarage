@@ -1,0 +1,8 @@
+from motor.motor_asyncio import AsyncIOMotorClient
+
+from app.config import settings
+
+client = AsyncIOMotorClient(settings.mongo_url)
+database = client[settings.mongo_db_name]
+
+cars_collection = database["cars"]
